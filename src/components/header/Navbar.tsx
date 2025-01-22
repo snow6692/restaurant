@@ -1,53 +1,3 @@
-// "use client";
-// import React, { useState } from "react";
-// import Link from "../link/Link";
-// import { Pages, Routes } from "@/constants/enum";
-// import { usePathname } from "next/navigation";
-// import { Button } from "../ui/button";
-// import { Menu, XIcon } from "lucide-react";
-
-// function Navbar() {
-//   const pathname = usePathname();
-//   const [openMenu, setOpenMenu] = useState(false);
-
-//   const links = [
-//     { label: "Menu", href: Routes.MENU },
-//     { label: "About", href: Routes.ABOUT },
-//     { label: "Contact", href: Routes.CONTACT },
-//     { label: "Login", href: `${Routes.AUTH}/${Pages.LOGIN}` },
-//   ];
-
-//   return (
-//     <nav className="flex items-center justify-between">
-//       <Button
-//         size={"sm"}
-//         className={`absolute right-5 top-5 lg:hidden ${openMenu ? "bg-red-500 hover:bg-red-600" : "bg-orange-500 hover:bg-orange-600"}`}
-//         onClick={() => setOpenMenu(!openMenu)}
-//       >
-//         {openMenu ? <XIcon size={4} /> : <Menu size={4} />}
-//       </Button>
-//       <ul
-//         className={` ${openMenu ? "" : "-translate-x-52"} transition-all duration-300 lg:flex lg:flex-row lg:gap-x-10`}
-//       >
-//         {links.map((link) => (
-//           <li key={link.href} className="mb-10 lg:mb-0">
-//             <Button asChild variant={"link"}>
-//               <Link
-//                 className={`${pathname === link.href ? "text-orange-500" : ""} ${link.href === `${Routes.AUTH}/${Pages.LOGIN}` ? "bg-red-500" : ""} rounded-lg p-2 transition-colors duration-200`}
-//                 href={link.href}
-//               >
-//                 {link.label}
-//               </Link>
-//             </Button>
-//           </li>
-//         ))}
-//       </ul>
-//     </nav>
-//   );
-// }
-
-// export default Navbar;
-
 "use client";
 
 import { Pages, Routes } from "@/constants/enum";
@@ -78,6 +28,9 @@ function Navbar() {
     { title: "Login", href: `${Routes.AUTH}/${Pages.LOGIN}` },
   ];
 
+  console.log(pathname); // /menu
+  console.log(links[0].href); // /menu
+
   return (
     <nav className="order-last lg:order-none">
       <Button
@@ -106,12 +59,17 @@ function Navbar() {
               <Link
                 onClick={() => setOpenMenu(false)}
                 href={link.href}
-                // className={`font-semibold transition-colors duration-200 hover:text-orange-600 ${
-                //   pathname.startsWith(link.href)
-                //     ? "text-orange-500"
-                //     : "text-gray-400"
-                // } ${link.href === `${Routes.AUTH}/${Pages.LOGIN}` ? "bg-red-500" : ""}} `}
-                className={`${pathname === link.href ? "text-orange-500" : ""} ${link.href === `${Routes.AUTH}/${Pages.LOGIN}` ? "bg-red-500" : ""} rounded-lg p-2 transition-colors duration-200`}
+                className={`${
+                  pathname === link.href ||
+                  pathname === link.href.replace(/\/$/, "")
+                    ? "text-orange-500"
+                    : "text-gray-400"
+                } ${
+                  link.href === `${Routes.AUTH}/${Pages.LOGIN}`
+                    ? "bg-red-500"
+                    : ""
+                } rounded-lg p-2 text-orange-500 transition-colors duration-200`}
+                // className={`${pathname === link.href ? "text-orange-500" : "text-gray-400"} ${link.href === `${Routes.AUTH}/${Pages.LOGIN}` ? "bg-red-500" : ""} rounded-lg p-2 transition-colors duration-200`}
               >
                 {link.title}
               </Link>
