@@ -4,7 +4,7 @@ import Menu from "../menu/Menu";
 import { getBestSellers } from "@/server/db/products";
 
 async function BestSellers() {
-  const bestSellers = await getBestSellers();
+  const bestSellers = await getBestSellers(3);
 
   return (
     <section>
