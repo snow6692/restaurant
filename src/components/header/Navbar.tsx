@@ -28,9 +28,6 @@ function Navbar() {
     { title: "Login", href: `${Routes.AUTH}/${Pages.LOGIN}` },
   ];
 
-  console.log(pathname); // /menu
-  console.log(links[0].href); // /menu
-
   return (
     <nav className="order-last lg:order-none">
       <Button

@@ -1,12 +1,11 @@
-import { data } from "@/constants/data";
-
 import MenuItem from "./MenuItem";
+import { ProductWithRelations } from "@/types/product";
 
-function Menu() {
+function Menu({ items }: { items: ProductWithRelations[] }) {
   return (
     <ul className="grid grid-cols-1 md:grid-cols-3">
-      {data.map((pizza) => (
-        <MenuItem key={pizza.id} pizza={pizza} />
+      {items.map((item) => (
+        <MenuItem key={item.id} item={item} />
       ))}
     </ul>
   );
