@@ -1,16 +1,11 @@
 import React from "react";
 import MainHeading from "../MainHeading";
 import Menu from "../menu/Menu";
-import prisma from "@/lib/prisma";
+import { getBestSellers } from "@/server/db/products";
 
 async function BestSellers() {
-  const bestSellers = await prisma.product.findMany({
-    include: {
-      sizes: true,
-      extras: true,
-    },
-  });
-  console.log(bestSellers);
+  const bestSellers = await getBestSellers();
+
   return (
     <section>
       <div className="container h-screen">
