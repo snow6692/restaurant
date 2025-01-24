@@ -14,8 +14,23 @@ import { Label } from "../ui/label";
 import { ProductWithRelations } from "@/types/product";
 import PickSize from "./PickSize";
 import Extras from "./Extras";
+import { useAppSelector } from "@/redux/hooks";
+import { selectCartItems } from "@/redux/features/cart/cartSlice";
+import { Extra, ProductSizes, Size } from "@prisma/client";
+import { useState } from "react";
 
 function AddToCartButton({ item }: { item: ProductWithRelations }) {
+  const cart = useAppSelector(selectCartItems);
+  const defaultSize =
+    cart.find((element) => element.id === item.id)?.sizes ||
+    item.sizes.find((size) => size.name === ProductSizes.SMALL);
+  const [selectedSize, setSelectedSize] = useState<Size>(defaultSize!);
+
+  const defaultExtras =
+    cart.find((element) => element.id === item.id)?.extras || [];
+
+  const [selectedExtras, setSelectedExtras] = useState<Extra[]>(defaultExtras!);
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -38,17 +53,22 @@ function AddToCartButton({ item }: { item: ProductWithRelations }) {
         <div className="space-y-10">
           <div className="space-y-4 text-center">
             <Label htmlFor="pick-size">Pick your size</Label>
-            <PickSize sizes={item.sizes} item={item} />
+            <PickSize
+              sizes={item.sizes}
+              item={item}
+              selectedSize={selectedSize}
+              setSelectedSize={setSelectedSize}
+            />
           </div>
           <div className="space-y-4 text-center">
             <Label htmlFor="add-extras">Any extras? </Label>
 
-            <Extras extras={item.extras} />
+            <Extras extras={item.extras} selectedExtras={selectedExtras} setSelectedExtras={setSelectedExtras} />
           </div>
         </div>
         <DialogFooter>
           <Button type="submit" className="h-10 w-full">
-            Add to cart{" "}
+            Add to cart
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -4,7 +4,6 @@ import React from "react";
 
 async function page() {
   const categories = await getProductsByCategory();
-  console.log(categories);
   return (
     <main>
       {categories.map((category) => (
