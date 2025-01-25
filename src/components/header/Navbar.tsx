@@ -1,6 +1,6 @@
 "use client";
 
-import { Pages, Routes } from "@/constants/enum";
+import { Pages, Routes } from "@/constants/enums";
 import Link from "../link/Link";
 import { Button } from "../ui/button";
 import { useState } from "react";

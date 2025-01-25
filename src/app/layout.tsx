@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
-import "./globals.css";
-import Header from "@/components/header/Header";
-import ReduxProvider from "@/providers/ReduxProvider";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -22,12 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={roboto.className}>
-        <ReduxProvider>
-          <Header />
-          {children}
-        </ReduxProvider>
-      </body>
+      <body className={roboto.className}>{children}</body>
     </html>
   );
 }

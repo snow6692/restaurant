@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "../link/Link";
-import { Routes } from "@/constants/enum";
+import { Routes } from "@/constants/enums";
 import { ShoppingCart } from "lucide-react";
 import { useAppSelector } from "@/redux/hooks";
 import { selectCartItems } from "@/redux/features/cart/cartSlice";

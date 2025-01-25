@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "../link/Link";
-import { Routes } from "@/constants/enum";
+import { Routes } from "@/constants/enums";
 import Navbar from "./Navbar";
 import CartButton from "./CartButton";
 
