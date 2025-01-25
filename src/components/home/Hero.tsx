@@ -2,10 +2,15 @@ import Image from "next/image";
 import React from "react";
 import { Button } from "../ui/button";
 import Link from "../link/Link";
-import { Routes } from "@/constants/enums";
+import { Languages, Routes } from "@/constants/enums";
 import { ArrowRightCircle } from "lucide-react";
+import { getCurrentLocale } from "@/lib/getCurrentLocale";
+import getTrans from "@/lib/translate";
 
-function Hero() {
+async function Hero() {
+  const locale = await getCurrentLocale();
+
+  const {} = await getTrans(locale);
   return (
     <section className="mx-20 my-7 flex flex-col space-x-5 md:flex-row md:justify-between">
       <div className="flex flex-col">
@@ -22,7 +27,10 @@ function Hero() {
           >
             <Link href={Routes.MENU}>
               Order now
-              <ArrowRightCircle size={4} />
+              <ArrowRightCircle
+                size={4}
+                className={`${locale === Languages.ARABIC ? "rotate-180" : ""}`}
+              />
             </Link>
           </Button>
 
@@ -33,7 +41,10 @@ function Hero() {
           >
             <Link href={Routes.MENU}>
               Show more
-              <ArrowRightCircle size={4} />
+              <ArrowRightCircle
+                size={4}
+                className={`${locale === Languages.ARABIC ? "rotate-180" : ""}`}
+              />
             </Link>
           </Button>
         </div>
@@ -46,7 +57,7 @@ function Hero() {
           src="/pizza.webp"
           width={500}
           height={600}
-          className="object-contain"
+          className="hidden object-contain lg:block"
         />
       </div>
     </section>

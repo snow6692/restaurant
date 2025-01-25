@@ -5,27 +5,27 @@ import Link from "../link/Link";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { Menu, XIcon } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 
-function Navbar() {
+function Navbar({ translation }: { translation: { [key: string]: string } }) {
   const [openMenu, setOpenMenu] = useState(false);
-
   const pathname = usePathname();
+  const { locale } = useParams();
 
   const links = [
     {
-      title: "Menu",
+      title: translation.menu,
       href: Routes.MENU,
     },
     {
-      title: "About",
+      title: translation.about,
       href: Routes.ABOUT,
     },
     {
-      title: "Contact",
+      title: translation.contact,
       href: Routes.CONTACT,
     },
-    { title: "Login", href: `${Routes.AUTH}/${Pages.LOGIN}` },
+    { title: translation.login, href: `${Routes.AUTH}/${Pages.LOGIN}` },
   ];
 
   return (
@@ -52,25 +52,22 @@ function Navbar() {
         </Button>
         {links.map((link) => (
           <li key={link.href}>
-            <Button asChild variant={"link"}>
-              <Link
-                onClick={() => setOpenMenu(false)}
-                href={link.href}
-                className={`${
-                  pathname === link.href ||
-                  pathname === link.href.replace(/\/$/, "")
-                    ? "text-orange-500"
-                    : "text-gray-400"
-                } ${
-                  link.href === `${Routes.AUTH}/${Pages.LOGIN}`
-                    ? "bg-red-500"
-                    : ""
-                } rounded-lg p-2 text-orange-500 transition-colors duration-200`}
-                // className={`${pathname === link.href ? "text-orange-500" : "text-gray-400"} ${link.href === `${Routes.AUTH}/${Pages.LOGIN}` ? "bg-red-500" : ""} rounded-lg p-2 transition-colors duration-200`}
-              >
-                {link.title}
-              </Link>
-            </Button>
+            <Link
+              onClick={() => setOpenMenu(false)}
+              href={`/${locale}/${link.href}`}
+              className={`${
+                pathname === link.href ||
+                pathname === link.href.replace(/\/$/, "")
+                  ? "text-orange-500"
+                  : "text-gray-400"
+              } ${
+                link.href === `${Routes.AUTH}/${Pages.LOGIN}`
+                  ? "bg-red-500"
+                  : ""
+              } rounded-lg p-2 transition-colors duration-200 ${pathname.startsWith(`/${locale}/${link.href}`) ? "text-orange-500" : ""}`}
+            >
+              {link.title}
+            </Link>
           </li>
         ))}
       </ul>

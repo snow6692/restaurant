@@ -10,13 +10,13 @@ export enum Languages {
 
 export enum Routes {
   ROOT = "/",
-  MENU = "/menu",
-  ABOUT = "/about",
-  CONTACT = "/contact",
-  AUTH = "/auth",
-  CART = "/cart",
-  PROFILE = "/profile",
-  ADMIN = "/admin",
+  MENU = "menu",
+  ABOUT = "about",
+  CONTACT = "contact",
+  AUTH = "auth",
+  CART = "cart",
+  PROFILE = "profile",
+  ADMIN = "admin",
 }
 
 export enum Pages {
