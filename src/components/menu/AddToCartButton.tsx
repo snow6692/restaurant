@@ -14,15 +14,20 @@ import { Label } from "../ui/label";
 import { ProductWithRelations } from "@/types/product";
 import PickSize from "./PickSize";
 import Extras from "./Extras";
-import { useAppSelector } from "@/redux/hooks";
-import { selectCartItems } from "@/redux/features/cart/cartSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { addCartItem, selectCartItems } from "@/redux/features/cart/cartSlice";
 import { Extra, ProductSizes, Size } from "@prisma/client";
 import { useState } from "react";
+import { formatCurrency } from "@/lib/formatters";
+import { getItemQuantity } from "@/lib/cart";
+import ChooseQuantity from "./ChooseQuantity";
 
 function AddToCartButton({ item }: { item: ProductWithRelations }) {
   const cart = useAppSelector(selectCartItems);
+  const quantity = getItemQuantity(item.id, cart);
+  const dispatch = useAppDispatch();
   const defaultSize =
-    cart.find((element) => element.id === item.id)?.sizes ||
+    cart.find((element) => element.id === item.id)?.size ||
     item.sizes.find((size) => size.name === ProductSizes.SMALL);
   const [selectedSize, setSelectedSize] = useState<Size>(defaultSize!);
 
@@ -30,6 +35,30 @@ function AddToCartButton({ item }: { item: ProductWithRelations }) {
     cart.find((element) => element.id === item.id)?.extras || [];
 
   const [selectedExtras, setSelectedExtras] = useState<Extra[]>(defaultExtras!);
+
+  let totalPrice = item.basePrice;
+  if (selectedSize) {
+    totalPrice += selectedSize.price;
+  }
+
+  if (selectedExtras.length > 0) {
+    for (const extra of selectedExtras) {
+      totalPrice += extra.price;
+    }
+  }
+
+  const handleAddToCart = () => {
+    dispatch(
+      addCartItem({
+        basePrice: item.basePrice,
+        id: item.id,
+        image: item.image,
+        name: item.name,
+        size: selectedSize,
+        extras: selectedExtras,
+      }),
+    );
+  };
 
   return (
     <Dialog>
@@ -63,13 +92,30 @@ function AddToCartButton({ item }: { item: ProductWithRelations }) {
           <div className="space-y-4 text-center">
             <Label htmlFor="add-extras">Any extras? </Label>
 
-            <Extras extras={item.extras} selectedExtras={selectedExtras} setSelectedExtras={setSelectedExtras} />
+            <Extras
+              extras={item.extras}
+              selectedExtras={selectedExtras}
+              setSelectedExtras={setSelectedExtras}
+            />
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" className="h-10 w-full">
-            Add to cart
-          </Button>
+          {quantity === 0 ? (
+            <Button
+              type="submit"
+              onClick={handleAddToCart}
+              className="h-10 w-full"
+            >
+              Add to cart {formatCurrency(totalPrice)}
+            </Button>
+          ) : (
+            <ChooseQuantity
+              quantity={quantity}
+              item={item}
+              selectedSize={selectedSize}
+              selectedExtras={selectedExtras}
+            />
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
